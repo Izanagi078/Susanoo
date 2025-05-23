@@ -6,8 +6,8 @@ const AuthLayout = ({ children }) => {
   return (
     <div className="flex">
       {/* Left Section */}
-      <div className="w-[50vw] h-screen px-12 pt-8 pb-12 bg-white">
-        <h2 className="text-lg font-medium text-purple-500">Expense Tracker</h2>
+      <div className="w-[50vw] h-screen px-15 pt-8 pb-12 bg-white">
+        <h2 className="text-3xl font-bold text-purple-500">Expense Tracker</h2>
         {children}
       </div>
 
