@@ -1,7 +1,6 @@
 const User = require("../models/User");
 const jwt = require("jsonwebtoken");
 const argon2 = require("argon2");
-
 // 🔑 Generate JWT Token
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "1h" });
@@ -88,6 +87,9 @@ exports.loginUser = async (req, res) => {
 };
 exports.getUserInfo = async (req, res) => {
   try {
+    // Debugging log to verify user data in request
+    console.log("🔍 Requested User ID:", req.user?.id);
+
     const user = await User.findById(req.user.id).select("-password");
 
     if (!user) {
@@ -96,8 +98,7 @@ exports.getUserInfo = async (req, res) => {
 
     res.status(200).json(user);
   } catch (err) {
-    res
-      .status(500)
-      .json({ message: "Error retrieving user info", error: err.message });
+    console.error("❌ Error retrieving user info:", err.message);
+    res.status(500).json({ message: "Error retrieving user info", error: err.message });
   }
 };
