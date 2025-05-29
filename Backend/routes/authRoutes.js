@@ -1,5 +1,5 @@
 const express = require("express");
-const {protect} = require("../middleware/authMiddleware");
+const { protect } = require("../middleware/authMiddleware");
 const {
   registerUser,
   loginUser,
@@ -8,15 +8,31 @@ const {
 
 const router = express.Router();
 const upload = require("../middleware/uploadMiddleware");
+
+// ✅ User Authentication Routes
 router.post("/register", registerUser);
 router.post("/login", loginUser);
 router.get("/getUser", protect, getUserInfo);
-router.post("/upload-image", upload.single("image"), (req, res) => {
+
+// ✅ Image Upload Route
+router.post("/upload-image", upload.single("file"), (req, res) => {
+  try {
+    console.log("🔹 Received Upload Request");
+    console.log("📂 File Details:", req.file);
+
     if (!req.file) {
-        return res.status(400).json({ message: "No file uploaded" });
+      return res.status(400).json({ message: "❌ No file uploaded" });
     }
+
+    // ✅ Construct image URL dynamically
     const imageUrl = `${req.protocol}://${req.get("host")}/uploads/${req.file.filename}`;
+    console.log("✅ Image Upload Successful:", imageUrl);
+    
     res.status(200).json({ imageUrl });
+  } catch (error) {
+    console.error("❌ Upload failed:", error.message);
+    res.status(500).json({ message: "❌ Internal Server Error", error: error.message });
+  }
 });
 
 module.exports = router;
