@@ -1,17 +1,30 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import AuthLayout from "../../assets/components/Layouts/AuthLayout";
 import { FaEye, FaEyeSlash, FaUpload } from "react-icons/fa"; 
+import axiosInstance from "../../../utils/axiosinstance"; // Verify correct path
+import { API_PATHS } from "../../../utils/apiPaths"; // Verify correct path
+import { useNavigate } from "react-router-dom";
+import { UserContext } from "../../context/userContext";
+import uploadImage from "../../../utils/UploadImage"; // Import uploadImage
 
 const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const [profileImage, setProfileImage] = useState(null);
+  const [profilePic, setProfilePic] = useState(null);
+  const [profileImagePreview, setProfileImagePreview] = useState(null);
+  const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
+  const { updateUser } = useContext(UserContext);
 
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
     if (file) {
-      setProfileImage(URL.createObjectURL(file));
+      setProfilePic(file);
+      setProfileImagePreview(URL.createObjectURL(file)); // Preview image
+      console.log("📂 Selected image for upload:", file);
     }
   };
 
@@ -31,6 +44,49 @@ const SignUp = () => {
     }
   };
 
+  const handleSignUp = async (event) => {
+    event.preventDefault();
+    setError(null);
+
+    try {
+      let profileImageUrl = ""; // Initialize profile image URL
+
+      // Upload image if present
+      if (profilePic) {
+        console.log("📡 Uploading profile image...");
+        const imgUploadRes = await uploadImage(profilePic); // Ensure uploadImage() exists
+        profileImageUrl = imgUploadRes.imageUrl || "";
+        console.log("✅ Profile Image Uploaded:", profileImageUrl);
+      }
+
+      console.log("📨 Sending Signup Request...");
+      // Prepare request payload (JSON format)
+      const response = await axiosInstance.post(API_PATHS.AUTH.REGISTER, {
+        fullName,
+        email,
+        password,
+        profileImageUrl, // Store uploaded image URL
+      });
+
+      console.log("🎯 Signup Success:", response.data);
+      const { token, user } = response.data;
+
+      if (token) {
+        localStorage.setItem("token", token);
+        updateUser(user);
+        navigate("/dashboard");
+      }
+    } catch (error) {
+      console.error("❌ Signup Error:", error);
+
+      if (error.response && error.response.data.message) {
+        setError(error.response.data.message);
+      } else {
+        setError("Something went wrong. Please try again.");
+      }
+    }
+  };
+
   return (
     <AuthLayout>
       <div className="flex flex-col items-center w-full max-w-lg mx-auto mt-[5vh]">
@@ -40,8 +96,8 @@ const SignUp = () => {
         {/* Profile Image Upload */}
         <div className="flex flex-col items-center mt-4">
           <div className="w-24 h-24 rounded-full border border-gray-300 flex items-center justify-center bg-gray-200 relative">
-            {profileImage ? (
-              <img src={profileImage} alt="Profile Preview" className="w-full h-full rounded-full object-cover" />
+            {profileImagePreview ? (
+              <img src={profileImagePreview} alt="Profile Preview" className="w-full h-full rounded-full object-cover" />
             ) : (
               <FaUpload className="text-gray-500 text-xl" />
             )}
@@ -53,11 +109,13 @@ const SignUp = () => {
         </div>
 
         {/* Sign-Up Form */}
-        <form className="w-full mt-6 space-y-4">
+        <form className="w-full mt-6 space-y-4" onSubmit={handleSignUp}>
           <div className="flex space-x-4 w-full">
             <input
               type="text"
               placeholder="Full Name"
+              value={fullName}
+              onChange={(e) => setFullName(e.target.value)}
               className="w-1/2 h-12 px-4 rounded-md border border-gray-300 bg-white text-gray-700 focus:outline-none focus:border-purple-500"
             />
             <div className="w-1/2">
@@ -78,6 +136,8 @@ const SignUp = () => {
             <input
               type={showPassword ? "text" : "password"}
               placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               className="w-full h-12 px-4 rounded-md border border-gray-300 bg-white text-gray-700 focus:outline-none focus:border-purple-500"
             />
             <button
@@ -89,8 +149,12 @@ const SignUp = () => {
             </button>
           </div>
 
+          {/* Error Message */}
+          {error && <p className="text-red-500 text-sm">{error}</p>}
+
           {/* Sign-Up Button */}
           <button 
+            type="submit"
             className="w-full py-3 bg-purple-500 text-white rounded-md font-semibold hover:bg-purple-600"
             disabled={emailError} // Prevent sign-up if email is invalid
           >
@@ -98,9 +162,15 @@ const SignUp = () => {
           </button>
         </form>
 
-        {/* Login Link */}
-        <p className="text-sm text-gray-500 mt-6">
-          Already have an account? <a href="/login" className="text-purple-500 hover:underline">Login</a>
+        {/* Go to Login Page */}
+        <p className="text-sm text-gray-500 mt-4">
+          Already have an account?{" "}
+          <button 
+            onClick={() => navigate("/login")} 
+            className="text-purple-500 font-semibold hover:underline"
+          >
+            Log in
+          </button>
         </p>
       </div>
     </AuthLayout>
