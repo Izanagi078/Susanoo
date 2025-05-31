@@ -1,12 +1,9 @@
-// helpers.js
 
-// Parses an email string and returns true if it matches a basic email pattern.
 export const validateEmail = (email) => {
   const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return regex.test(email);
 };
 
-// Gets the initials from a full name, taking the first letter of the first two words.
 export const getInitials = (name) => {
   if (!name) return "";
   
@@ -18,4 +15,10 @@ export const getInitials = (name) => {
   }
   
   return initials.toUpperCase();
+};
+
+export const addThousandsSeparator = (value) => {
+  if (value === null || value === undefined) return "";
+  
+  return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
