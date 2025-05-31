@@ -9,9 +9,10 @@ exports.getDashboardData = async (req, res) => {
       return res.status(400).json({ message: "Invalid user ID" });
     }
 
-    const userObjectId = Types.ObjectId.createFromTime(userId);
+    // Convert userId correctly into an ObjectId using the value, not its timestamp.
+    const userObjectId = new Types.ObjectId(userId);
 
-    // Fetch total income & expenses
+    // Fetch total income & expenses using aggregation.
     const [totalIncome, totalExpense] = await Promise.all([
       Income.aggregate([
         { $match: { userId: userObjectId } },
@@ -48,27 +49,26 @@ exports.getDashboardData = async (req, res) => {
         transactions.reduce((sum, txn) => sum + txn.amount, 0),
       ]);
 
-    // Fetch last 5 transactions (income + expenses)
+    // Fetch last 5 transactions (income and expenses)
     const lastTransactions = await Promise.all([
-    Income.find({ userId }).sort({ date: -1 }).limit(5).lean(),
-    Expense.find({ userId }).sort({ date: -1 }).limit(5).lean(),
+      Income.find({ userId }).sort({ date: -1 }).limit(5).lean(),
+      Expense.find({ userId }).sort({ date: -1 }).limit(5).lean(),
     ]).then(([incomeTxns, expenseTxns]) =>
-    [
-     ...incomeTxns.map((txn) => ({ ...txn, type: "income" })),
-      ...expenseTxns.map((txn) => ({ ...txn, type: "expense" })),
-    ]
+      [
+        ...incomeTxns.map((txn) => ({ ...txn, type: "income" })),
+        ...expenseTxns.map((txn) => ({ ...txn, type: "expense" })),
+      ]
     );
 
-    // Final Response
+    // Final Response (using correct variable names)
     res.json({
       totalBalance: totalIncome - totalExpense,
-      totalIncome,
+      totalIncome: totalIncome,
       totalExpenses: totalExpense,
       last30DaysExpenses: { total: expensesLast30Days, transactions: last30DaysExpenseTransactions },
       last60DaysIncome: { total: incomeLast60Days, transactions: last60DaysIncomeTransactions },
       recentTransactions: lastTransactions,
     });
-
   } catch (error) {
     console.error("Error fetching dashboard data:", error);
     res.status(500).json({ message: "Server Error", error });
