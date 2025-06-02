@@ -18,6 +18,10 @@ const SideMenu = ({ activeMenu }) => {
   };
 
   const handleLogout = () => {
+    // Ask for confirmation before logging out.
+    if (!window.confirm("Are you sure you want to logout?")) {
+      return;
+    }
     localStorage.clear();
     clearUser();
     navigate("/login");
