@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 import { mapRecentTransactions } from "../../../utils/transactioMapper";
 
 const RecentTransactions = ({ transactions }) => {
@@ -7,8 +6,8 @@ const RecentTransactions = ({ transactions }) => {
   const mappedTransactions = mapRecentTransactions(transactions);
 
   // Separate transactions by type.
-  const incomeTxns = mappedTransactions.filter(txn => txn.type === "income");
-  const expenseTxns = mappedTransactions.filter(txn => txn.type === "expense");
+  const incomeTxns = mappedTransactions.filter((txn) => txn.type === "income");
+  const expenseTxns = mappedTransactions.filter((txn) => txn.type === "expense");
 
   // Display 2 or 5 transactions per type based on showMore state.
   const displayedIncome = showMore ? incomeTxns.slice(0, 5) : incomeTxns.slice(0, 2);
@@ -20,7 +19,6 @@ const RecentTransactions = ({ transactions }) => {
 
       {/* Income Section */}
       <div>
-        <h3 className="text-lg font-semibold mb-2">Income</h3>
         {displayedIncome.length === 0 ? (
           <p className="text-gray-500">No income transactions found.</p>
         ) : (
@@ -46,7 +44,6 @@ const RecentTransactions = ({ transactions }) => {
 
       {/* Expense Section */}
       <div className="mt-4">
-        <h3 className="text-lg font-semibold mb-2">Expense</h3>
         {displayedExpense.length === 0 ? (
           <p className="text-gray-500">No expense transactions found.</p>
         ) : (
@@ -70,7 +67,7 @@ const RecentTransactions = ({ transactions }) => {
         )}
       </div>
 
-      {/* Show More/Show Less toggle */}
+      {/* Show More/Show Less Toggle */}
       {(incomeTxns.length > 2 || expenseTxns.length > 2) && (
         <div className="flex justify-center mt-4">
           <button
@@ -81,22 +78,6 @@ const RecentTransactions = ({ transactions }) => {
           </button>
         </div>
       )}
-
-      {/* Two Buttons: One for Income and one for Expense */}
-      <div className="flex justify-end mt-4 space-x-4">
-        <Link
-          to="/income"
-          className="px-4 py-2 bg-green-500 text-white rounded-lg shadow hover:bg-green-600 transition-all"
-        >
-          See All Income
-        </Link>
-        <Link
-          to="/expense"
-          className="px-4 py-2 bg-red-500 text-white rounded-lg shadow hover:bg-red-600 transition-all"
-        >
-          See All Expense
-        </Link>
-      </div>
     </div>
   );
 };
