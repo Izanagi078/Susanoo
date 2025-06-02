@@ -90,21 +90,32 @@ const SignUp = () => {
   return (
     <AuthLayout>
       <div className="flex flex-col items-center w-full max-w-lg mx-auto mt-[5vh]">
-        <h3 className="text-3xl font-bold text-purple-500">Create an Account</h3>
-        <p className="text-sm text-gray-500 mt-2">Sign up to start tracking your expenses</p>
+        <h3 className="text-3xl font-bold text-yellow-500">Create an Account</h3>
+        <p className="text-sm text-gray-400 mt-2">
+          Sign up to start tracking your expenses
+        </p>
 
         {/* Profile Image Upload */}
         <div className="flex flex-col items-center mt-4">
-          <div className="w-24 h-24 rounded-full border border-gray-300 flex items-center justify-center bg-gray-200 relative">
+          <div className="w-24 h-24 rounded-full border border-yellow-500 flex items-center justify-center bg-gray-800 relative">
             {profileImagePreview ? (
-              <img src={profileImagePreview} alt="Profile Preview" className="w-full h-full rounded-full object-cover" />
+              <img
+                src={profileImagePreview}
+                alt="Profile Preview"
+                className="w-full h-full rounded-full object-cover"
+              />
             ) : (
-              <FaUpload className="text-gray-500 text-xl" />
+              <FaUpload className="text-yellow-500 text-xl" />
             )}
           </div>
-          <label className="mt-3 text-sm text-gray-500 cursor-pointer">
+          <label className="mt-3 text-sm text-gray-400 cursor-pointer hover:underline">
             Upload Profile Image
-            <input type="file" accept="image/*" onChange={handleImageUpload} className="hidden" />
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleImageUpload}
+              className="hidden"
+            />
           </label>
         </div>
 
@@ -116,7 +127,7 @@ const SignUp = () => {
               placeholder="Full Name"
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
-              className="w-1/2 h-12 px-4 rounded-md border border-gray-300 bg-white text-gray-700 focus:outline-none focus:border-purple-500"
+              className="w-1/2 h-12 px-4 rounded-md border border-yellow-500 bg-gray-800 text-white focus:outline-none focus:border-red-600"
             />
             <div className="w-1/2">
               <input
@@ -124,10 +135,15 @@ const SignUp = () => {
                 placeholder="Email Address"
                 value={email}
                 onChange={handleEmailChange}
-                className={`w-full h-12 px-4 rounded-md border bg-white text-gray-700 focus:outline-none 
-                ${emailError ? "border-red-500" : "border-gray-300 focus:border-purple-500"}`}
+                className={`w-full h-12 px-4 rounded-md border bg-gray-800 text-white focus:outline-none ${
+                  emailError
+                    ? "border-red-500"
+                    : "border-yellow-500 focus:border-red-600"
+                }`}
               />
-              {emailError && <p className="text-red-500 text-xs mt-1">{emailError}</p>}
+              {emailError && (
+                <p className="text-red-500 text-xs mt-1">{emailError}</p>
+              )}
             </div>
           </div>
 
@@ -138,12 +154,12 @@ const SignUp = () => {
               placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full h-12 px-4 rounded-md border border-gray-300 bg-white text-gray-700 focus:outline-none focus:border-purple-500"
+              className="w-full h-12 px-4 rounded-md border border-yellow-500 bg-gray-800 text-white focus:outline-none focus:border-red-600"
             />
             <button
               type="button"
-              onClick={() => setShowPassword(prev => !prev)}
-              className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500"
+              onClick={() => setShowPassword((prev) => !prev)}
+              className="absolute right-4 top-1/2 transform -translate-y-1/2 text-yellow-500"
             >
               {showPassword ? <FaEyeSlash size={20} /> : <FaEye size={20} />}
             </button>
@@ -153,21 +169,21 @@ const SignUp = () => {
           {error && <p className="text-red-500 text-sm">{error}</p>}
 
           {/* Sign-Up Button */}
-          <button 
+          <button
             type="submit"
-            className="w-full py-3 bg-purple-500 text-white rounded-md font-semibold hover:bg-purple-600"
-            disabled={emailError} // Prevent sign-up if email is invalid
+            className="w-full py-3 bg-red-600 text-white rounded-md font-semibold hover:bg-red-700"
+            disabled={emailError}
           >
             SIGN UP
           </button>
         </form>
 
         {/* Go to Login Page */}
-        <p className="text-sm text-gray-500 mt-4">
+        <p className="text-sm text-gray-400 mt-4">
           Already have an account?{" "}
-          <button 
-            onClick={() => navigate("/login")} 
-            className="text-purple-500 font-semibold hover:underline"
+          <button
+            onClick={() => navigate("/login")}
+            className="text-yellow-500 font-semibold hover:underline"
           >
             Log in
           </button>

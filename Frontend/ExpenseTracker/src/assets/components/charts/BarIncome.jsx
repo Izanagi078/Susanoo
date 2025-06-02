@@ -54,8 +54,8 @@ const IncomeBarChart = ({ incomes }) => {
         {
           label: "Income ($)",
           data: dataValues,
-          backgroundColor: "#6B46C1", // primary purple
-          borderColor: "#6B46C1",
+          backgroundColor: "#FFD700", // Gold color for income.
+          borderColor: "#FFD700",
           borderWidth: 1,
         },
       ],
@@ -66,17 +66,33 @@ const IncomeBarChart = ({ incomes }) => {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
-      legend: { position: "bottom" },
-      title: { display: true, text: "Income Overview (All Time)" },
+      legend: { 
+        position: "bottom",
+        labels: { color: "#FFF" }  // White legend text.
+      },
+      title: { 
+        display: true, 
+        text: "Income Overview (All Time)",
+        color: "#FFF"  // White title text.
+      },
     },
     scales: {
-      x: { title: { display: true, text: "Date" } },
-      y: { beginAtZero: true, title: { display: true, text: "Amount ($)" } },
+      x: { 
+        title: { display: true, text: "Date", color: "#FFF" },
+        ticks: { color: "#FFF" },
+        grid: { color: "rgba(255,255,255,0.2)" }
+      },
+      y: { 
+        beginAtZero: true, 
+        title: { display: true, text: "Amount ($)", color: "#FFF" },
+        ticks: { color: "#FFF" },
+        grid: { color: "rgba(255,255,255,0.2)" }
+      },
     },
   };
 
   return (
-    <div style={{ height: "300px" }} className="w-full bg-white shadow rounded-lg p-4">
+    <div style={{ height: "300px" }} className="w-full bg-gray-900 shadow rounded-lg p-4">
       <Bar data={chartData} options={options} />
     </div>
   );

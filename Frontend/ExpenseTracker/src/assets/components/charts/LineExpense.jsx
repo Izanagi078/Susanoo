@@ -16,15 +16,14 @@ import {
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
 const ExpenseLineChart = ({ expenses }) => {
-  // Prepare the data for the line chart. Here we group expenses by date.
+  // Prepare the data for the line chart by grouping expenses by date.
   const chartData = useMemo(() => {
     const groupedExpenses = {};
     expenses.forEach((expense) => {
-      // Format date as YYYY-MM-DD for grouping
+      // Format date as YYYY-MM-DD for grouping.
       const dateKey = new Date(expense.date).toISOString().split("T")[0];
       groupedExpenses[dateKey] = (groupedExpenses[dateKey] || 0) + expense.amount;
     });
-
     // Sort dates in ascending order.
     const sortedDates = Object.keys(groupedExpenses).sort();
 
@@ -34,10 +33,10 @@ const ExpenseLineChart = ({ expenses }) => {
         {
           label: "Expense ($)",
           data: sortedDates.map((date) => groupedExpenses[date]),
-          borderColor: "#6B46C1", // Red color for expenses
-          backgroundColor: "rgba(107, 70, 193, 0.1)",
+          borderColor: "#FF4500", // Rich red for expenses.
+          backgroundColor: "rgba(255, 69, 0, 0.1)", // Translucent red fill.
           fill: true,
-          tension: 0, // Curve of the line.
+          tension: 0, // No curve.
           pointRadius: 4, // Size of points.
         },
       ],
@@ -48,23 +47,45 @@ const ExpenseLineChart = ({ expenses }) => {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
-      legend: { position: "bottom" },
-      title: { display: true, text: "Expense Trends (All Time)" },
+      legend: { 
+        position: "bottom",
+        labels: { color: "#FFF" } // Set legend text to white.
+      },
+      title: { 
+        display: true,
+        text: "Expense Trends (All Time)",
+        font: { size: 20 },
+        color: "#FFF" // White title text.
+      },
+      tooltip: {
+        callbacks: {
+          label: (context) => {
+            let label = context.dataset.label ? context.dataset.label + ": " : "";
+            if (context.parsed.y !== null) {
+              label += "$" + context.parsed.y.toFixed(2);
+            }
+            return label;
+          },
+        },
+      },
     },
     scales: {
-      x: { 
-        title: { display: true, text: "Date" },
-        // Optionally, you can improve date display using time scales.
+      x: {
+        title: { display: true, text: "Date", color: "#FFF" },
+        ticks: { color: "#FFF" },
+        grid: { color: "rgba(255,255,255,0.2)" },
       },
       y: {
-        title: { display: true, text: "Amount ($)" },
+        title: { display: true, text: "Amount ($)", color: "#FFF" },
+        ticks: { color: "#FFF" },
         beginAtZero: true,
+        grid: { color: "rgba(255,255,255,0.2)" },
       },
     },
   };
 
   return (
-    <div style={{ height: "300px" }} className="w-full bg-white shadow rounded-lg p-4">
+    <div style={{ height: "300px" }} className="w-full bg-gray-900 shadow rounded-lg p-4">
       <Line data={chartData} options={options} />
     </div>
   );

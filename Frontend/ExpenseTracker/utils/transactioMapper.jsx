@@ -1,4 +1,4 @@
-// src/utils/transactionMapper.js
+// File: src/utils/transactionMapper.js
 
 import React from "react";
 import { IoMdTrendingUp, IoMdTrendingDown } from "react-icons/io";
@@ -19,7 +19,7 @@ export const mapRecentTransactions = (transactions) => {
       id: txn._id,
       type: txn.type,
       icon: isIncome 
-        ? <IoMdTrendingUp className="text-green-500" /> 
+        ? <IoMdTrendingUp className="text-yellow-500" /> 
         : <IoMdTrendingDown className="text-red-500" />,
       title: isIncome ? (txn.source || "Income") : (txn.category || "Expense"),
       date: new Date(txn.date).toLocaleDateString(),

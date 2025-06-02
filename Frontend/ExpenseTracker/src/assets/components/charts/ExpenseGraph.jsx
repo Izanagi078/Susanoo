@@ -1,3 +1,4 @@
+// File: src/assets/components/charts/Last30DaysExpenseChart.jsx
 import React, { useMemo } from "react";
 import PropTypes from "prop-types";
 import { Line } from "react-chartjs-2";
@@ -49,8 +50,8 @@ const Last30DaysExpenseChart = ({ last30DaysExpenses }) => {
           label: "Expense ($)",
           data: amounts,
           fill: "origin", // Enables filling from the line to the x-axis.
-          borderColor: "#6B46C1",
-          backgroundColor: "rgba(107,70,193,0.3)",
+          borderColor: "#FF4500", // Luxurious red tone.
+          backgroundColor: "rgba(255,69,0,0.3)", // Matching translucent red fill.
           tension: 0,
           pointRadius: 3,
         },
@@ -58,18 +59,20 @@ const Last30DaysExpenseChart = ({ last30DaysExpenses }) => {
     };
   }, [transactions]);
 
-  // Chart options configuration.
+  // Configure chart options with theme-appropriate colors.
   const options = {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
       legend: {
         position: "bottom",
+        labels: { color: "#FFF" }, // White legend text.
       },
       title: {
         display: true,
         text: "Last 30 Days Expense Overview",
         font: { size: 20 },
+        color: "#FFF", // White title text.
       },
       tooltip: {
         callbacks: {
@@ -85,18 +88,22 @@ const Last30DaysExpenseChart = ({ last30DaysExpenses }) => {
     },
     scales: {
       x: {
-        title: { display: true, text: "Date" },
+        title: { display: true, text: "Date", color: "#FFF" },
+        ticks: { color: "#FFF" },
+        grid: { color: "rgba(255,255,255,0.2)" },
       },
       y: {
         beginAtZero: true,
-        title: { display: true, text: "Amount ($)" },
+        title: { display: true, text: "Amount ($)", color: "#FFF" },
+        ticks: { color: "#FFF" },
+        grid: { color: "rgba(255,255,255,0.2)" },
       },
     },
   };
 
   return (
     <div
-      className="p-4 bg-white shadow rounded-lg"
+      className="p-4 bg-gray-900 shadow rounded-lg border border-yellow-500"
       style={{ width: "100%", height: "300px" }}
     >
       <Line data={chartData} options={options} />

@@ -24,11 +24,12 @@ ChartJS.register({
     const centerY = top + height / 2;
     ctx.save();
     ctx.font = "bold 20px Arial";
-    ctx.fillStyle = "#000";
+    // Set the center text color to white.
+    ctx.fillStyle = "#FFF";
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
     
-    // Now accessing the centerText from the plugins options.
+    // Access the center text from the plugins options.
     const centerText =
       chart.config.options.plugins.centerText &&
       chart.config.options.plugins.centerText.text
@@ -45,37 +46,47 @@ const FinancialDonutChart = ({ totalBalance, totalIncome, totalExpenses }) => {
     datasets: [
       {
         data: [totalIncome, totalExpenses, totalBalance],
-        backgroundColor: ["#FFA500", "#FF0000", "#6B46C1"],
-        hoverBackgroundColor: ["#FF8C00", "#DC143C", "#7B53CF"]
+        backgroundColor: [
+          "#FFD700", // Yellow for Total Income.
+          "#FF4500", // Red for Total Expenses.
+          "#8B0000"  // Dark Red (mix of red and black) for Total Balance.
+        ],
+        hoverBackgroundColor: [
+          "#FFC700", // Lighter yellow on hover.
+          "#DC143C", // Crimson on hover.
+          "#7A0000"  // Slightly lighter dark red on hover.
+        ]
       }
     ]
   };
 
-const options = {
-  maintainAspectRatio: false,
-  plugins: {
-    legend: {
-      position: "bottom"
-    },
-    tooltip: {
-      callbacks: {
-        label: function (context) {
-          const label = context.label || "";
-          const value = context.parsed;
-          return `${label}: $${value}`;
+  const options = {
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        position: "bottom",
+        labels: {
+          color: "#FFF" // White legend text.
         }
+      },
+      tooltip: {
+        callbacks: {
+          label: function (context) {
+            const label = context.label || "";
+            const value = context.parsed;
+            return `${label}: $${value}`;
+          }
+        }
+      },
+      centerText: {
+        text: `$${totalBalance}`
       }
-    },
-    centerText: {
-      text: `$${totalBalance}`
     }
-  }
-};
-
+  };
 
   return (
-    <div className="mt-8 p-4 bg-white shadow rounded-lg">
-      <h2 className="text-xl font-semibold mb-4">Financial Overview</h2>
+    <div className="mt-8 p-4 bg-gray-900 shadow rounded-lg border border-yellow-500">
+      <h2 className="text-xl font-semibold mb-4 text-yellow-500">Financial Overview</h2>
       <div style={{ width: "100%", height: "300px", position: "relative" }}>
         <Doughnut data={data} options={options} />
       </div>

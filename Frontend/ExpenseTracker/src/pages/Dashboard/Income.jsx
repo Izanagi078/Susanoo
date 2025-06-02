@@ -117,23 +117,23 @@ const IncomePage = () => {
     }
   };
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <div className="text-white">Loading...</div>;
 
   return (
     <DashboardLayout activeMenu="Income">
-      <div className="my-5 mx-auto max-w-4xl">
+      <div className="my-5 mx-auto max-w-4xl text-white">
         <div className="flex items-center justify-between mb-4">
-          <h1 className="text-2xl font-bold">Income Page</h1>
+          <h1 className="text-2xl font-bold text-yellow-500">Income Page</h1>
           <div className="flex items-center space-x-2">
             <button
               onClick={() => setShowAddForm((prev) => !prev)}
-              className="flex items-center bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+              className="flex items-center bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
             >
               <IoMdAdd className="mr-2" /> {showAddForm ? "Cancel" : "Add Income"}
             </button>
             <button
               onClick={handleDownload}
-              className="flex items-center bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+              className="flex items-center bg-yellow-500 text-black px-4 py-2 rounded hover:bg-yellow-600"
             >
               Download Income
             </button>
@@ -142,9 +142,9 @@ const IncomePage = () => {
 
         {showAddForm && (
           <div className="mt-6">
-            <form onSubmit={handleFormSubmit} className="bg-white shadow rounded-lg p-6">
+            <form onSubmit={handleFormSubmit} className="bg-gray-900 shadow rounded-lg p-6">
               <div className="mb-4">
-                <label className="block text-gray-700">Icon (Emoji)</label>
+                <label className="block text-yellow-500">Icon (Emoji)</label>
                 <div className="flex items-center space-x-2">
                   <input
                     type="text"
@@ -152,12 +152,12 @@ const IncomePage = () => {
                     value={formData.icon}
                     readOnly
                     placeholder="Choose Emoji or leave empty"
-                    className="mt-1 block w-full border-gray-300 rounded-md"
+                    className="mt-1 block w-full border border-yellow-500 rounded-md bg-gray-800 text-white"
                   />
                   <button
                     type="button"
                     onClick={() => setShowEmojiPicker((prev) => !prev)}
-                    className="bg-gray-200 px-2 py-1 rounded"
+                    className="bg-gray-700 px-2 py-1 rounded text-yellow-500"
                   >
                     {showEmojiPicker ? "Close" : "Select"}
                   </button>
@@ -169,7 +169,7 @@ const IncomePage = () => {
                 )}
               </div>
               <div className="mb-4">
-                <label className="block text-gray-700">Source</label>
+                <label className="block text-yellow-500">Source</label>
                 <input
                   type="text"
                   name="source"
@@ -177,11 +177,11 @@ const IncomePage = () => {
                   onChange={handleInputChange}
                   placeholder="Salary, Business, etc."
                   required
-                  className="mt-1 block w-full border-gray-300 rounded-md"
+                  className="mt-1 block w-full border border-yellow-500 rounded-md bg-gray-800 text-white focus:outline-none focus:border-red-600"
                 />
               </div>
               <div className="mb-4">
-                <label className="block text-gray-700">Amount</label>
+                <label className="block text-yellow-500">Amount</label>
                 <input
                   type="number"
                   name="amount"
@@ -189,21 +189,21 @@ const IncomePage = () => {
                   onChange={handleInputChange}
                   placeholder="Enter amount"
                   required
-                  className="mt-1 block w-full border-gray-300 rounded-md"
+                  className="mt-1 block w-full border border-yellow-500 rounded-md bg-gray-800 text-white focus:outline-none focus:border-red-600"
                 />
               </div>
               <div className="mb-4">
-                <label className="block text-gray-700">Date</label>
+                <label className="block text-yellow-500">Date</label>
                 <input
                   type="date"
                   name="date"
                   value={formData.date}
                   onChange={handleInputChange}
                   required
-                  className="mt-1 block w-full border-gray-300 rounded-md"
+                  className="mt-1 block w-full border border-yellow-500 rounded-md bg-gray-800 text-white focus:outline-none focus:border-red-600"
                 />
               </div>
-              <button type="submit" className="w-full bg-green-500 text-white py-2 rounded hover:bg-green-600">
+              <button type="submit" className="w-full bg-red-600 text-white py-2 rounded hover:bg-red-700">
                 Submit
               </button>
             </form>
@@ -211,7 +211,7 @@ const IncomePage = () => {
         )}
 
         {incomes.length === 0 ? (
-          <div className="mt-6 p-4 bg-white shadow rounded-lg text-center text-gray-500">
+          <div className="mt-6 p-4 bg-gray-900 shadow rounded-lg text-center text-gray-400">
             No income records available yet. Start by adding your income.
           </div>
         ) : (

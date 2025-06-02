@@ -1,3 +1,4 @@
+// File: src/pages/Home.jsx
 import React, { useState, useEffect } from "react";
 import DashboardLayout from "../../assets/components/Layouts/DashboardLayout";
 import InfoCard from "../../assets/components/cards/InfoCard";
@@ -33,7 +34,7 @@ const Home = () => {
     fetchDashboardData();
   }, []);
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <div className="text-white">Loading...</div>;
 
   // Combine transactions from last60DaysIncome and last30DaysExpenses for the heatmap.
   const heatmapTransactions = [
@@ -43,26 +44,26 @@ const Home = () => {
 
   return (
     <DashboardLayout activeMenu="Dashboard">
-      <div className="my-5 mx-auto">
+      <div className="my-5 mx-auto text-white">
         {/* InfoCards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <InfoCard
             icon={<IoMdCard />}
             label="Total Balance"
             value={`$${addThousandsSeparator(dashboardData?.totalBalance)}`}
-            color="bg-primary"
+            color="bg-gradient-to-r from-black to-red-600"
           />
           <InfoCard
             icon={<IoMdTrendingUp />}
             label="Total Income"
             value={`$${addThousandsSeparator(dashboardData?.totalIncome)}`}
-            color="bg-orange-500"
+            color="bg-red-600"
           />
           <InfoCard
             icon={<IoMdTrendingDown />}
             label="Total Expense"
             value={`$${addThousandsSeparator(dashboardData?.totalExpenses)}`}
-            color="bg-red-500"
+            color="bg-red-700"
           />
         </div>
 
