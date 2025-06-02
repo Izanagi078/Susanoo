@@ -1,4 +1,3 @@
-// File: src/assets/components/charts/ExpenseList.jsx
 import React from "react";
 
 const defaultIcon = "⬇️";
@@ -6,20 +5,20 @@ const defaultIcon = "⬇️";
 const ExpenseList = ({ expenses, onDelete }) => {
   if (!expenses || expenses.length === 0) {
     return (
-      <div className="p-4 bg-white shadow rounded-lg text-gray-500">
+      <div className="p-4 bg-gray-900 shadow rounded-lg text-gray-400">
         No expense records available.
       </div>
     );
   }
 
   return (
-    <div className="mt-6">
-      <h2 className="text-xl font-semibold mb-4">Expense Records</h2>
-      <div className="divide-y divide-gray-200">
+    <div className="mt-6 text-white">
+      <h2 className="text-xl font-semibold mb-4 text-yellow-500">Expense Records</h2>
+      <div className="divide-y divide-yellow-500">
         {expenses.map((expense) => (
           <div
             key={expense._id}
-            className="flex items-center justify-between p-4 hover:bg-gray-100 group rounded-none"
+            className="flex items-center justify-between p-4 hover:bg-gray-800 group rounded-none"
           >
             <div className="flex items-center space-x-4">
               <span className="text-2xl">
@@ -27,13 +26,13 @@ const ExpenseList = ({ expenses, onDelete }) => {
               </span>
               <div>
                 <div className="font-semibold">{expense.category || "Expense"}</div>
-                <div className="text-sm text-gray-500">
+                <div className="text-sm text-gray-400">
                   {new Date(expense.date).toLocaleDateString()}
                 </div>
               </div>
             </div>
             <div className="flex items-center space-x-2">
-              <span className="font-bold">
+              <span className="font-bold text-red-500">
                 ${Number(expense.amount).toFixed(2)}
               </span>
               <button

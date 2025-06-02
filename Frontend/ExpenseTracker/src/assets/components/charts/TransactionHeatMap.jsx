@@ -23,8 +23,10 @@ const TransactionHeatmap = ({ transactions }) => {
   const startDate = startDateObj.toISOString().split("T")[0];
 
   return (
-    <div className="p-4 bg-white shadow rounded-lg mt-6">
-      <h2 className="text-xl font-semibold mb-4">Transactions Heatmap</h2>
+    <div className="p-4 bg-gray-900 shadow rounded-lg mt-6 text-white">
+      <h2 className="text-xl font-semibold mb-4 text-yellow-500">
+        Transactions Heatmap
+      </h2>
       <CalendarHeatmap
         startDate={startDate}
         endDate={endDate}
@@ -48,22 +50,22 @@ const TransactionHeatmap = ({ transactions }) => {
         }}
         showWeekdayLabels={true}
       />
-      {/* Custom CSS for purple themed colors */}
+      {/* Custom CSS for red, black, and gold themed colors */}
       <style jsx>{`
         .react-calendar-heatmap .color-empty {
-          fill: #f3e8ff;
+          fill: #1a1a1a; /* Nearly black */
         }
         .react-calendar-heatmap .color-scale-1 {
-          fill: #e6ccff;
+          fill: #B8860B; /* Dark Goldenrod */
         }
         .react-calendar-heatmap .color-scale-2 {
-          fill: #d9b3ff;
+          fill: #FFD700; /* Gold */
         }
         .react-calendar-heatmap .color-scale-3 {
-          fill: #cc99ff;
+          fill: #FF4500; /* OrangeRed */
         }
         .react-calendar-heatmap .color-scale-4 {
-          fill: #bf80ff;
+          fill: #DC143C; /* Crimson */
         }
       `}</style>
     </div>

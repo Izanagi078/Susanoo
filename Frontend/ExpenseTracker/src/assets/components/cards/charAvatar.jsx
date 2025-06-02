@@ -10,25 +10,25 @@ const Avatar = ({ profileImageUrl, fullName, size = "w-16 h-16" }) => {
   const closeModal = () => setIsModalOpen(false);
 
   return (
-    <div className="mb-6 border-b border-gray-300 pb-4 flex flex-col items-center">
+    <div className="mb-6 border-b border-yellow-500 pb-4 flex flex-col items-center">
       {profileImageUrl ? (
         <img
           src={profileImageUrl}
           alt="Profile"
-          className={`${size} rounded-full object-cover cursor-pointer`}
+          className={`${size} rounded-full object-cover cursor-pointer border-2 border-yellow-500`}
           onClick={openModal}
         />
       ) : (
         <div
-          className={`${size} rounded-full bg-gray-400 flex items-center justify-center cursor-pointer`}
+          className={`${size} rounded-full bg-black border border-yellow-500 flex items-center justify-center cursor-pointer`}
           onClick={openModal}
         >
-          <span className="text-white font-bold text-lg">
+          <span className="text-yellow-500 font-bold text-lg">
             {getInitials(fullName)}
           </span>
         </div>
       )}
-      <h5 className="mt-2 text-lg font-medium text-gray-800">
+      <h5 className="mt-2 text-lg font-medium text-white">
         {fullName || "User"}
       </h5>
 
@@ -43,11 +43,11 @@ const Avatar = ({ profileImageUrl, fullName, size = "w-16 h-16" }) => {
               <img
                 src={profileImageUrl}
                 alt="Profile Fullscreen"
-                className="max-w-full max-h-full rounded"
+                className="max-w-full max-h-full rounded border-2 border-yellow-500"
               />
             ) : (
-              <div className="bg-gray-400 flex items-center justify-center w-32 h-32 rounded-full">
-                <span className="text-white font-bold text-4xl">
+              <div className="bg-black border border-yellow-500 flex items-center justify-center w-32 h-32 rounded-full">
+                <span className="text-yellow-500 font-bold text-4xl">
                   {getInitials(fullName)}
                 </span>
               </div>

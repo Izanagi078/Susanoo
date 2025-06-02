@@ -1,4 +1,4 @@
-import { useMemo, React } from "react";
+import React, { useMemo } from "react";
 import { Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -65,8 +65,8 @@ const Last60DaysIncomeBarChart = ({ last60DaysIncome }) => {
         {
           label: "Income ($)",
           data: dataValues,
-          backgroundColor: "#6B46C1", // Use your primary purple.
-          borderColor: "#6B46C1",
+          backgroundColor: "#FFD700", // Luxurious gold color.
+          borderColor: "#FFD700",
           borderWidth: 1
         }
       ]
@@ -86,12 +86,14 @@ const Last60DaysIncomeBarChart = ({ last60DaysIncome }) => {
         shadowOffsetY: 2
       },
       legend: {
-        position: "bottom"
+        position: "bottom",
+        labels: { color: "#FFF" } // White legend text.
       },
       title: {
         display: true,
         text: "Last 60 Days Income Overview",
-        font: { size: 20 }
+        font: { size: 20 },
+        color: "#FFF" // White title text.
       },
       tooltip: {
         callbacks: {
@@ -108,24 +110,22 @@ const Last60DaysIncomeBarChart = ({ last60DaysIncome }) => {
     },
     scales: {
       x: {
-        title: {
-          display: true,
-          text: "Date"
-        }
+        title: { display: true, text: "Date", color: "#FFF" },
+        ticks: { color: "#FFF" },
+        grid: { color: "rgba(255,255,255,0.2)" }
       },
       y: {
         beginAtZero: true,
-        title: {
-          display: true,
-          text: "Amount ($)"
-        }
+        title: { display: true, text: "Amount ($)", color: "#FFF" },
+        ticks: { color: "#FFF" },
+        grid: { color: "rgba(255,255,255,0.2)" }
       }
     }
   };
 
   return (
     <div
-      className="p-4 bg-white shadow rounded-lg"
+      className="p-4 bg-gray-900 shadow rounded-lg border border-yellow-500"
       style={{ width: "100%", height: "300px" }}
     >
       <Bar data={chartData} options={options} />
