@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import AuthLayout from "../../assets/components/Layouts/AuthLayout";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import axiosInstance from "../../../utils/axiosinstance"; // Verify this path
+import axiosInstance from "../../../utils/axiosInstance"; // Verify this path
 import { API_PATHS } from "../../../utils/apiPaths"; // Verify this path
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../context/userContext";
