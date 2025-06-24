@@ -5,13 +5,12 @@ import InfoCard from "../../assets/components/cards/InfoCard";
 import RecentTransactions from "./RecentTransactions";
 import { IoMdCard, IoMdTrendingUp, IoMdTrendingDown } from "react-icons/io";
 import { addThousandsSeparator } from "../../../utils/helper";
-import axiosInstance from "../../../utils/axiosinstance";
+import axiosInstance from "../../../utils/axiosInstance";
 import { API_PATHS } from "../../../utils/apiPaths";
 import { useUserAuth } from "../../hooks/useUserAuth";
 import FinancialDonutChart from "../../assets/components/charts/FinancialChart";
 import Last60DaysIncomeBarChart from "../../assets/components/charts/IncomeChart";
 import Last30DaysExpenseChart from "../../assets/components/charts/ExpenseGraph";
-import TransactionHeatmap from "../../assets/components/charts/TransactionHeatMap";
 
 const Home = () => {
   useUserAuth();
@@ -98,11 +97,7 @@ const Home = () => {
         </div>
 
         {/* Transactions Heatmap */}
-        <div className="mt-6">
-          {heatmapTransactions.length > 0 && (
-            <TransactionHeatmap transactions={heatmapTransactions} />
-          )}
-        </div>
+
       </div>
     </DashboardLayout>
   );
