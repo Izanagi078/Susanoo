@@ -7,7 +7,7 @@ import { IoMdCard, IoMdTrendingUp, IoMdTrendingDown } from "react-icons/io";
 import { addThousandsSeparator } from "../../../utils/helper";
 import axiosInstance from "../../../utils/axiosInstance";
 import { API_PATHS } from "../../../utils/apiPaths";
-import { useUserAuth } from "../../hooks/useUserAuth";
+import { useUserAuth } from "../../hooks/useUserauth";
 import FinancialDonutChart from "../../assets/components/charts/FinancialChart";
 import Last60DaysIncomeBarChart from "../../assets/components/charts/IncomeChart";
 import Last30DaysExpenseChart from "../../assets/components/charts/ExpenseGraph";
