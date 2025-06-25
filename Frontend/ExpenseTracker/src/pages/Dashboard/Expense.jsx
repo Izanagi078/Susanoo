@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import DashboardLayout from "../../assets/components/Layouts/DashboardLayout";
 import ExpenseLineChart from "../../assets/components/charts/LineExpense";
 import ExpenseList from "../../../utils/expensehelper"; // Make sure this helper renders the full list
-import axiosInstance from "../../../utils/axiosinstance";
+import axiosInstance from "../../../utils/axiosInstance";
 import { API_PATHS } from "../../../utils/apiPaths";
 import { IoMdAdd } from "react-icons/io";
 import EmojiPicker from "emoji-picker-react"; // Ensure you've installed this package: npm install emoji-picker-react
