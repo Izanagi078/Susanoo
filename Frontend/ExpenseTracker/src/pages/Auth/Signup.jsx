@@ -5,7 +5,7 @@ import axiosInstance from "../../../utils/axiosInstance"; // Verify correct path
 import { API_PATHS } from "../../../utils/apiPaths"; // Verify correct path
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../context/userContext";
-import uploadImage from "../../../utils/UploadImage"; // Import uploadImage
+import uploadImage from "../../../utils/uploadImage"; // Import uploadImage
 
 const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
