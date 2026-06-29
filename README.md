@@ -6,10 +6,12 @@ A modern, highly responsive, and feature-rich personal finance management dashbo
 
 ## 🚀 Key Technical Features
 
-* **Authoritative Dashboard Aggregations**: Performs real-time financial mathematical calculations (net balance, running totals, 30/60-day aggregations) directly inside MongoDB Atlas using optimized `$match` and `$group` aggregation pipelines.
+* **Type-Safe Request Validation (Zod)**: Intercepts and parses incoming REST API requests using strong Zod schemas in [validationSchemas.js](file:///c:/Users/Lenovo/OneDrive/Desktop/Susanoo/Backend/middleware/validationSchemas.js), enforcing numerical boundaries (e.g. positive amounts), email string validations, and sanitizing payloads.
+* **🛡️ API DDoS Protection (Rate Limiting)**: Integrates `express-rate-limit` inside [server.js](file:///c:/Users/Lenovo/OneDrive/Desktop/Susanoo/Backend/server.js#L12) to throttle inbound client traffic to 200 requests per 15-minute window per IP, preventing scraper/bot spamming.
+* **Memory-Safe Excel Streaming**: Refactored spreadsheet downloads in [incomeController.js](file:///c:/Users/Lenovo/OneDrive/Desktop/Susanoo/Backend/controllers/incomeController.js#L52) to compile Excel binary worksheets directly in RAM buffers using `xlsx.write`. The buffer is streamed back via HTTP headers, eliminating disk write-locking and file-race conditions on ephemeral cloud servers.
+* **Authoritative Dashboard Aggregations**: Performs real-time financial calculations (net balance, running totals, 30/60-day aggregations) directly inside MongoDB Atlas using optimized `$match` and `$group` aggregation pipelines in [dashboardController.js](file:///c:/Users/Lenovo/OneDrive/Desktop/Susanoo/Backend/controllers/dashboardController.js).
 * **Granular Visual Analytics**: Integrates dynamic data charts (using `Recharts` and `Chart.js`) and GitHub-style financial calendar heatmaps (`react-calendar-heatmap`) to help users track entry frequency and spending patterns.
-* **Secure Session Management**: Employs double-layered password cryptography (utilizing `Argon2` and `Bcrypt`) and industry-standard JWT (JSON Web Tokens) stateless authentication for secure session validation.
-* **Enterprise Spreadsheet Exporters**: Leverages `SheetJS (XLSX)` to dynamically assemble and export user transaction histories into structured Microsoft Excel spreadsheets.
+* **Secure Session Management**: Employs password cryptography (utilizing `Argon2` and `Bcrypt` fallbacks) and industry-standard JWT (JSON Web Tokens) authentication for secure stateless session validation.
 * **Asynchronous File Handling**: Handles profile image uploads asynchronously using `Multer` on the backend, processing form-data multi-part files.
 * **Fluid UI Design**: Engineered with a sleek, responsive design using **Tailwind CSS v4** and customized interactive icons (`React Icons`).
 
