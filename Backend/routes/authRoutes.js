@@ -8,10 +8,12 @@ const {
 
 const router = express.Router();
 const upload = require("../middleware/uploadMiddleware");
+const validate = require("../middleware/validate");
+const { registerSchema, loginSchema } = require("../middleware/validationSchemas");
 
 // ✅ User Authentication Routes
-router.post("/register", registerUser);
-router.post("/login", loginUser);
+router.post("/register", validate(registerSchema), registerUser);
+router.post("/login", validate(loginSchema), loginUser);
 router.get("/getUser", protect, getUserInfo);
 
 // ✅ Image Upload Route

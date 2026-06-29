@@ -48,7 +48,7 @@ exports.deleteExpense = async (req, res) => {
         res.status(500).json({ message: "Server Error" });
     }
 };
-// Download Excel
+// Download Excel (Memory-Safe Buffer Stream)
 exports.downloadExpenseExcel = async (req, res) => {
     const userId = req.user.id;
     try {
@@ -56,17 +56,23 @@ exports.downloadExpenseExcel = async (req, res) => {
 
         // Prepare data for Excel
         const data = expense.map((item) => ({
-            category: item.category,
+            Category: item.category,
             Amount: item.amount,
-            Date: item.date,
+            Date: item.date ? new Date(item.date).toLocaleDateString() : "",
         }));
 
         const wb = xlsx.utils.book_new();
         const ws = xlsx.utils.json_to_sheet(data);
         xlsx.utils.book_append_sheet(wb, ws, "Expense");
-        xlsx.writeFile(wb, 'expense_details.xlsx');
-        res.download('expense_details.xlsx');
+        
+        // Write workbook to memory buffer instead of writing a local file to disk
+        const buffer = xlsx.write(wb, { type: "buffer", bookType: "xlsx" });
+
+        res.setHeader("Content-Disposition", "attachment; filename=\"expense_details.xlsx\"");
+        res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        res.send(buffer);
     } catch (error) {
+        console.error("Error exporting expense excel:", error);
         res.status(500).json({ message: "Server Error" });
     }
 };
