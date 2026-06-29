@@ -11,6 +11,9 @@ const expenseRoutes=require("./routes/expenseRoutes")
 const dashboardRoutes=require("./routes/dashboardRoutes")
 const app = express();
 
+// 🛡️ Trust Proxy for Express-Rate-Limit behind Render/Vercel reverse proxies
+app.set("trust proxy", 1);
+
 // 🛡️ API Rate Limiter (Prevents DDoS and Endpoint Spamming)
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
@@ -47,8 +50,9 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-// Middleware to parse JSON requests
-app.use(express.json());
+// Middleware to parse JSON requests (Increased limit to allow Base64 image payloads)
+app.use(express.json({ limit: "10mb" }));
+app.use(express.urlencoded({ limit: "10mb", extended: true }));
 
 // Connect to the database
 connectDB();
