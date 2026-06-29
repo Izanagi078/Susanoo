@@ -34,9 +34,19 @@ const addIncomeSchema = z.object({
   }),
 });
 
+const updateProfileSchema = z.object({
+  body: z.object({
+    fullName: z.string().trim().min(1, "Full name is required").optional(),
+    password: z.string().min(6, "Password must be at least 6 characters long").optional(),
+    profileImageUrl: z.string().optional(),
+    email: z.string().optional(),
+  }),
+});
+
 module.exports = {
   registerSchema,
   loginSchema,
   addExpenseSchema,
   addIncomeSchema,
+  updateProfileSchema,
 };

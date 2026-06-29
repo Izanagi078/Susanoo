@@ -102,3 +102,67 @@ exports.getUserInfo = async (req, res) => {
     res.status(500).json({ message: "Error retrieving user info", error: err.message });
   }
 };
+
+// 👤 Update Profile Details (Except Fixed Email)
+exports.updateProfile = async (req, res) => {
+  const userId = req.user.id;
+  try {
+    const { fullName, password, profileImageUrl, email } = req.body;
+
+    // Find User
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Explicitly enforce that the email is a fixed primary key and cannot be updated
+    if (email && email !== user.email) {
+      return res.status(400).json({ message: "Email is a fixed identifier and cannot be modified." });
+    }
+
+    // Update fields if provided
+    if (fullName) {
+      user.fullName = fullName;
+    }
+    if (profileImageUrl) {
+      user.profileImageUrl = profileImageUrl;
+    }
+    if (password) {
+      user.password = await argon2.hash(password);
+    }
+
+    await user.save();
+
+    // Return sanitized updated user profile
+    const updatedUser = await User.findById(userId).select("-password");
+    res.status(200).json({
+      message: "Profile updated successfully",
+      user: updatedUser
+    });
+  } catch (error) {
+    console.error("❌ Profile update error:", error.message);
+    res.status(500).json({ message: "Server Error", error: error.message });
+  }
+};
+
+// 🚪 Logout User (Stateless Token Revocation Blocklisting)
+exports.logoutUser = async (req, res) => {
+  try {
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      return res.status(400).json({ message: "No active session token found" });
+    }
+    const token = authHeader.split(" ")[1];
+
+    const RevokedToken = require("../models/RevokedToken");
+    
+    // Save to database blocklist (MongoDB will auto-delete it after 1 hour via TTL)
+    await RevokedToken.create({ token });
+
+    console.log("🔒 Session revoked successfully");
+    res.status(200).json({ message: "Logged out successfully" });
+  } catch (error) {
+    console.error("❌ Logout revocation error:", error.message);
+    res.status(500).json({ message: "Logout failed", error: error.message });
+  }
+};

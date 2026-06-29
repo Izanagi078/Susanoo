@@ -3,14 +3,12 @@ const Income=require("../models/Income");
 
 exports.addIncome = async (req, res) => {
     const userId = req.user.id;
+    const mongoose = require("mongoose");
+    const session = await mongoose.startSession();
+    session.startTransaction();
 
     try {
         const { icon, source, amount, date } = req.body;
-
-        // Validation: Check for missing fields
-        if (!source || !amount || !date) {
-            return res.status(400).json({ message: "All fields are required" });
-        }
 
         const newIncome = new Income({
             userId,
@@ -20,13 +18,16 @@ exports.addIncome = async (req, res) => {
             date: new Date(date)
         });
 
-        await newIncome.save();
+        await newIncome.save({ session });
+        await session.commitTransaction();
+        session.endSession();
         res.status(200).json(newIncome);
     } catch (error) {
-    console.error("Error adding income:", error); // Log the full error
-    res.status(500).json({ message: "Server Error", error: error.message });
-}
-
+        await session.abortTransaction();
+        session.endSession();
+        console.error("Error adding income:", error);
+        res.status(500).json({ message: "Server Error", error: error.message });
+    }
 };
 
 // Get All Income Source
@@ -40,12 +41,20 @@ exports.getAllIncome = async (req, res) => {
         res.status(500).json({message:"Server Error"})
     }
 };
+
 // Delete Income Source
 exports.deleteIncome = async (req, res) => {
+    const mongoose = require("mongoose");
+    const session = await mongoose.startSession();
+    session.startTransaction();
     try {
-        await Income.findByIdAndDelete(req.params.id);
+        await Income.findByIdAndDelete(req.params.id, { session });
+        await session.commitTransaction();
+        session.endSession();
         res.json({ message: "Income deleted successfully" });
     } catch (error) {
+        await session.abortTransaction();
+        session.endSession();
         res.status(500).json({ message: "Server Error" });
     }
 };

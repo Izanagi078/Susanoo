@@ -3,15 +3,22 @@ import { SIDE_MENU_DATA } from "../../../../utils/data";
 import { UserContext } from "../../../context/userContext";
 import { useNavigate } from "react-router-dom";
 import Avatar from "../cards/charAvatar"; // your avatar component
+import axiosInstance from "../../../../utils/axiosInstance";
+import { API_PATHS } from "../../../../utils/apiPaths";
 
 const SideMenu = ({ activeMenu }) => {
   const { user, clearUser } = useContext(UserContext);
   const navigate = useNavigate();
   const [showViewDP, setShowViewDP] = useState(false);
 
-  const handleClick = (route) => {
+  const handleClick = async (route) => {
     if (route?.toLowerCase() === "/logout") {
       if (window.confirm("Are you sure you want to logout?")) {
+        try {
+          await axiosInstance.post(API_PATHS.AUTH.LOGOUT);
+        } catch (err) {
+          console.error("Logout API failed:", err.response || err);
+        }
         localStorage.clear();
         clearUser();
         navigate("/login");

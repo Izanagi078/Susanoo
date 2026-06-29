@@ -3,14 +3,12 @@ const Expense=require("../models/Expense");
 
 exports.addExpense = async (req, res) => {
     const userId = req.user.id;
+    const mongoose = require("mongoose");
+    const session = await mongoose.startSession();
+    session.startTransaction();
 
     try {
         const { icon, category, amount, date } = req.body;
-
-        // Validation: Check for missing fields
-        if (!category || !amount || !date) {
-            return res.status(400).json({ message: "All fields are required" });
-        }
 
         const newExpense = new Expense({
             userId,
@@ -20,13 +18,16 @@ exports.addExpense = async (req, res) => {
             date: new Date(date)
         });
 
-        await newExpense.save();
+        await newExpense.save({ session });
+        await session.commitTransaction();
+        session.endSession();
         res.status(200).json(newExpense);
     } catch (error) {
-    console.error("Error adding income:", error); // Log the full error
-    res.status(500).json({ message: "Server Error", error: error.message });
-}
-
+        await session.abortTransaction();
+        session.endSession();
+        console.error("Error adding expense:", error);
+        res.status(500).json({ message: "Server Error", error: error.message });
+    }
 };
 
 exports.getAllExpense = async (req, res) => {
@@ -39,12 +40,20 @@ exports.getAllExpense = async (req, res) => {
         res.status(500).json({message:"Server Error"})
     }
 };
-// Delete Income Source
+
+// Delete Expense Source
 exports.deleteExpense = async (req, res) => {
+    const mongoose = require("mongoose");
+    const session = await mongoose.startSession();
+    session.startTransaction();
     try {
-        await Expense.findByIdAndDelete(req.params.id);
+        await Expense.findByIdAndDelete(req.params.id, { session });
+        await session.commitTransaction();
+        session.endSession();
         res.json({ message: "Expense deleted successfully" });
     } catch (error) {
+        await session.abortTransaction();
+        session.endSession();
         res.status(500).json({ message: "Server Error" });
     }
 };

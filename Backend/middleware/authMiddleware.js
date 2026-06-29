@@ -15,6 +15,13 @@ exports.protect = async (req, res, next) => {
       return res.status(401).json({ message: "Not authorized, no token provided" });
     }
 
+    // Check if token has been revoked (logged out)
+    const RevokedToken = require("../models/RevokedToken");
+    const isRevoked = await RevokedToken.findOne({ token });
+    if (isRevoked) {
+      return res.status(401).json({ message: "Session expired, please login again" });
+    }
+
     // Verify token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     console.log("Decoded Token:", decoded);
