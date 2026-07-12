@@ -1,6 +1,6 @@
 const User = require("../models/User");
 const jwt = require("jsonwebtoken");
-const argon2 = require("argon2");
+const { hashPassword, verifyPassword } = require("../utils/passwordHelper");
 // 🔑 Generate JWT Token
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "1h" });
@@ -23,7 +23,7 @@ exports.registerUser = async (req, res) => {
     }
 
     // ✅ Explicitly Hash Password
-    const hashedPassword = await argon2.hash(password);
+    const hashedPassword = await hashPassword(password);
 
     console.log("Hashed Password Before Save:", hashedPassword);
 
@@ -67,7 +67,7 @@ exports.loginUser = async (req, res) => {
     console.log("Trying to verify:", { enteredPassword: password, storedHash: user.password });
 
     // ✅ Fix Verification Logic
-    const isMatch = await argon2.verify(user.password, password);
+    const isMatch = await verifyPassword(user.password, password);
     
     console.log("Password Match:", isMatch);
 
@@ -128,7 +128,7 @@ exports.updateProfile = async (req, res) => {
       user.profileImageUrl = profileImageUrl;
     }
     if (password) {
-      user.password = await argon2.hash(password);
+      user.password = await hashPassword(password);
     }
 
     await user.save();

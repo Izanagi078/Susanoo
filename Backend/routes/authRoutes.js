@@ -20,7 +20,7 @@ router.put("/update-profile", protect, validate(updateProfileSchema), updateProf
 router.post("/logout", protect, logoutUser);
 router.get("/getUser", protect, getUserInfo);
 
-// ✅ Image Upload Route (Base64 Conversion & Immediate Local Disk Cleanup)
+// ✅ Image Upload Route (Base64 Conversion & In-Memory Processing)
 router.post("/upload-image", upload.single("file"), (req, res) => {
   try {
     console.log("🔹 Received Upload Request");
@@ -29,21 +29,11 @@ router.post("/upload-image", upload.single("file"), (req, res) => {
       return res.status(400).json({ message: "❌ No file uploaded" });
     }
 
-    const fs = require("fs");
-    const filePath = req.file.path;
-    
-    // Read file to buffer, encode to base64, construct Data URL
-    const fileBuffer = fs.readFileSync(filePath);
-    const base64Data = fileBuffer.toString("base64");
+    // Convert file buffer from memory to base64, construct Data URL
+    const base64Data = req.file.buffer.toString("base64");
     const imageUrl = `data:${req.file.mimetype};base64,${base64Data}`;
-    
-    // Asynchronously delete local file so server storage footprint remains 0
-    fs.unlink(filePath, (err) => {
-      if (err) console.error("❌ Temporary upload file cleanup failed:", err.message);
-      else console.log("🗑️ Temporary upload file deleted successfully");
-    });
 
-    console.log("✅ Image Base64 Upload Successful");
+    console.log("✅ Image Base64 Upload Successful (In-Memory)");
     res.status(200).json({ imageUrl });
   } catch (error) {
     console.error("❌ Upload failed:", error.message);

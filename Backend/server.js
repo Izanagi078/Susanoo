@@ -33,7 +33,7 @@ const corsOptions = {
       "http://localhost:3000",
     ];
     if (process.env.CLIENT_URL) {
-      allowedOrigins.push(process.env.CLIENT_URL);
+      allowedOrigins.push(process.env.CLIENT_URL.replace(/\/$/, ""));
     }
     
     // Allow requests with no origin (like mobile apps/curl) or whitelisted origins/Vercel preview subdomains
